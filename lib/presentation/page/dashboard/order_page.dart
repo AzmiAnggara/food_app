@@ -8,6 +8,7 @@ import 'package:food_app/config/api.dart';
 import 'package:food_app/data/model/order.dart';
 import 'package:food_app/presentation/controller/c_order.dart';
 import 'package:food_app/presentation/controller/c_user.dart';
+import 'package:food_app/presentation/page/detail_order_page.dart';
 import 'package:get/get.dart';
 
 import '../../../config/app_color.dart';
@@ -62,71 +63,78 @@ class _OrderPageState extends State<OrderPage> {
               String imageCover = products[0]['image'];
               String total = AppFormat.currency(order.total);
               String date = AppFormat.date(order.createdAt);
-              return Container(
-                padding: const EdgeInsets.all(8),
-                margin: EdgeInsets.fromLTRB(
-                  0,
-                  index == 0 ? 16 : 10,
-                  0,
-                  index == _.listOrder.length - 1 ? 16 : 10,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 6,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        '${Api.imageProduct}/${imageCover}',
-                        height: 70,
-                        width: 70,
-                        fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => DetailOrderPage(
+                        order: order,
+                      ));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: EdgeInsets.fromLTRB(
+                    0,
+                    index == 0 ? 16 : 10,
+                    0,
+                    index == _.listOrder.length - 1 ? 16 : 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 6,
+                        color: Colors.black,
                       ),
-                    ),
-                    DView.spaceWidth(8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          DView.spaceHeight(8),
-                          Text(
-                            total,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: AppColor.primary),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              date,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          '${Api.imageProduct}/${imageCover}',
+                          height: 70,
+                          width: 70,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      DView.spaceWidth(8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            DView.spaceHeight(8),
+                            Text(
+                              total,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(color: AppColor.primary),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                date,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
