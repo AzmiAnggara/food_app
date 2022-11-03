@@ -1,6 +1,6 @@
 # food_app
 
-A new Flutter project.
+BWA Bootcamp
 
 ## Getting Started
 
