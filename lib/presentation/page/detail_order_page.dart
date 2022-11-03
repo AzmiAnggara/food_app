@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -8,6 +9,8 @@ import 'package:food_app/config/api.dart';
 import 'package:food_app/config/app_color.dart';
 import 'package:food_app/config/app_format.dart';
 import 'package:food_app/data/model/order.dart';
+import 'package:food_app/data/source/source_order.dart';
+import 'package:get/get.dart';
 
 class DetailOrderPage extends StatelessWidget {
   const DetailOrderPage({Key? key, required this.order}) : super(key: key);
@@ -36,6 +39,34 @@ class DetailOrderPage extends StatelessWidget {
           DView.spaceWidth()
         ],
       ),
+      floatingActionButton: order.status != 'Diterima'
+          ? null
+          : FloatingActionButton(
+              onPressed: () async {
+                bool? yes = await DInfo.dialogConfirmation(
+                  context,
+                  'Hapus Riwayat Pesanan',
+                  'Klik Yes Jika Benar',
+                );
+                if (yes ?? false) {
+                  bool succes = await SourceOrder.deleteHistory(
+                      order.idOrder, order.payment);
+                  if (succes) {
+                    DInfo.dialogSuccess('Berhasil Hapus Pesanan');
+                    DInfo.closeDialog(actionAfterClose: () {
+                      Get.back(result: true);
+                    });
+                  } else {
+                    DInfo.dialogError('Gagal Hapus Riwayat');
+                    DInfo.closeDialog();
+                  }
+                }
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(
+                Icons.delete,
+              ),
+            ),
       body: Padding(
         padding: const EdgeInsets.all(18),
         child: ListView(

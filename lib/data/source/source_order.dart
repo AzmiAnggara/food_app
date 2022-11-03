@@ -43,6 +43,37 @@ class SourceOrder {
       return list.map((e) => Order.fromJson(e)).toList();
     }
 
+    return [];
+  }
+
+  static Future<List<Order>> history(String idUser) async {
+    String url = '${Api.order}/history.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_user': idUser,
+    });
+
+    if (responseBody == null) return [];
+
+    if (responseBody['success']) {
+      List list = responseBody['data'];
+      return list.map((e) => Order.fromJson(e)).toList();
+    }
+
+    return [];
+  }
+
+  static Future<bool> deleteHistory(
+    String idOrder,
+    String payment,
+  ) async {
+    String url = '${Api.order}/delete_history.php';
+    Map? responseBody = await AppRequest.post(url, {
+      'id_order': idOrder,
+      'payment': payment,
+    });
+
+    if (responseBody == null) return false;
+
     return responseBody['success'];
   }
 }
